@@ -2,6 +2,7 @@ package com.guichaguri.trackplayer.service;
 
 import android.os.Binder;
 import android.os.Bundle;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
 import com.guichaguri.trackplayer.service.metadata.MetadataManager;
@@ -30,7 +31,7 @@ public class MusicBinder extends Binder {
         ExoPlayback playback = manager.getPlayback();
 
         // TODO remove?
-        if(playback == null) {
+        if (playback == null) {
             playback = manager.createLocalPlayback(new Bundle());
             manager.switchPlayback(playback);
         }
@@ -44,9 +45,12 @@ public class MusicBinder extends Binder {
     }
 
     public void updateOptions(Bundle bundle) {
-        manager.setStopWithApp(bundle.getBoolean("stopWithApp", false));
-        manager.setAlwaysPauseOnInterruption(bundle.getBoolean("alwaysPauseOnInterruption", false));
-        manager.getMetadata().updateOptions(bundle);
+        try {
+            manager.setStopWithApp(bundle.getBoolean("stopWithApp", false));
+            manager.setAlwaysPauseOnInterruption(bundle.getBoolean("alwaysPauseOnInterruption", false));
+            manager.getMetadata().updateOptions(bundle);
+        } catch (Exception e) {
+        }
     }
 
     public void updateNowPlayingMetadata(NowPlayingMetadata nowPlaying) {
